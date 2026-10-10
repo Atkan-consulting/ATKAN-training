@@ -7,3 +7,14 @@ assert.equal(T.summary([s],'2026-10-11').volume,640);assert.equal(T.summary([s],
 assert.equal(T.summary([s],'2026-10-11').distance,500);
 T.validate({version:1,programs:[],sessions:[s]});
 assert.throws(()=>T.parseSets('Squat ; -1 ; 8'));assert.throws(()=>T.parseSets('Squat ; ; 8'));assert.throws(()=>T.validate({version:1,programs:[],sessions:[{...s,date:'2026-02-30'}]}));assert.throws(()=>T.validate({version:1,programs:[],sessions:[{...s,rpe:11}]}));assert.throws(()=>T.validate({version:1,programs:[],sessions:[s,s]}));console.log('Tests réussis : calendrier, calculs, validation et doublons.');
+const P=require('./plan.js');
+assert.equal(P.days.length,6);
+assert.equal(P.getDay(3,1).items.filter(e=>e.round===2).length,0);
+assert.equal(P.getDay(3,2).items.filter(e=>e.round===2).length,4);
+assert.equal(P.getDay(3,3,true).items.filter(e=>e.round===2).length,0);
+assert.equal(P.getDay(3,4).items.find(e=>e.name==='Fractionné arbitre').sets,3);
+for(const day of [1,2,4]){const n=w=>P.getDay(day,w).items.filter(e=>e.strength).reduce((s,e)=>s+e.sets,0);assert.ok(n(4)/n(1)>=.6&&n(4)/n(1)<=.7)}
+for(let d=0;d<6;d++)for(let w=1;w<=4;w++){const p=P.getDay(d,w);assert.equal(new Set(p.items.map(e=>e.id)).size,p.items.length);for(const e of p.items){assert.ok(e.rest>=0);assert.ok(e.sets>=1)}}
+T.validate({version:1,programs:[],sessions:[],guided:{demo:{done:{e0_0:true},rests:{e0:60},actual:{}}},timer:{end:Date.now()+60000,remaining:null,label:'Repos',kind:'rest'}});
+assert.throws(()=>T.validate({version:1,programs:[],sessions:[],timer:{end:0,remaining:-10,label:'Repos',kind:'rest'}}));
+console.log('Programme vérifié : six journées, tours HYROX, allégement S4, repos et état du minuteur.');

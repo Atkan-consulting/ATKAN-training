@@ -18,3 +18,10 @@ for(let d=0;d<6;d++)for(let w=1;w<=4;w++){const p=P.getDay(d,w);assert.equal(new
 T.validate({version:1,programs:[],sessions:[],guided:{demo:{done:{e0_0:true},rests:{e0:60},actual:{}}},timer:{end:Date.now()+60000,remaining:null,label:'Repos',kind:'rest'}});
 assert.throws(()=>T.validate({version:1,programs:[],sessions:[],timer:{end:0,remaining:-10,label:'Repos',kind:'rest'}}));
 console.log('Programme vérifié : six journées, tours HYROX, allégement S4, repos et état du minuteur.');
+global.Plan=P;const C=require('./catalog.js');
+const base=P.getDay(1,1),first=base.items[0].id,second=base.items[1].id;
+const edited=C.compose(base,{hidden:[first],counts:{[second]:5},added:[{id:'added-test',name:'Test',target:'10 répétitions',sets:2,rest:60}],order:['added-test',second]});
+assert.equal(edited.items[0].id,'added-test');assert.equal(edited.items[1].sets,5);assert.ok(!edited.items.some(x=>x.id===first));assert.equal(base.items[0].id,first);assert.equal(C.category('Développé couché'),'Poitrine');assert.equal(C.category('Leg curl'),'Jambes');
+assert.throws(()=>T.validate({version:1,programs:[],sessions:[],routineEdits:{w1_d1:{counts:{e0:0}}}}));
+T.validate({version:1,programs:[],sessions:[],routineEdits:{w1_d1:{counts:{e0:3},hidden:[],order:[],added:[]}},favorites:['c0']});
+console.log('Studio vérifié : catalogue, ajout, retrait, ordre, séries et sauvegardes.');

@@ -8,7 +8,7 @@ if(data.guideSelection){const v=data.guideSelection;if(Number.isInteger(v.day)&&
 function selection(){return{day:Number($('cycleDay').value),week:Number($('cycleWeek').value),date:$('guidedDate').value,oneRound:$('oneRound').checked}}
 function guideKey(){const s=selection();return `${s.date}_w${s.week}_d${s.day}`}
 function current(){return data.guided?.[guideKey()]||{done:{},rests:{},actual:{},started:null}}
-function programme(){const s=selection();return Plan.getDay(s.day,s.week,s.oneRound)}
+function programme(){const s=selection();return Catalog.compose(Plan.getDay(s.day,s.week,s.oneRound),data.routineEdits?.[`w${s.week}_d${s.day}`])}
 function saveGuide(g,extra={}){return persist({...data,guideSelection:selection(),guided:{...data.guided,[guideKey()]:g},...extra})}
 async function unlockAudio(){try{audioContext=audioContext||new(window.AudioContext||window.webkitAudioContext)();if(audioContext.state!=='running')await audioContext.resume();return audioContext.state==='running'}catch{status('Son indisponible sur ce navigateur ; le décompte visuel reste actif.');return false}}
 function beep(){if(!audioContext||audioContext.state!=='running'){status('Décompte terminé. Active le bip pour les prochains repos.');return}for(let i=0;i<3;i++){let o=audioContext.createOscillator(),g=audioContext.createGain(),t=audioContext.currentTime+i*.3;o.frequency.value=880;o.connect(g);g.connect(audioContext.destination);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.22,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+.2);o.start(t);o.stop(t+.22)}if(navigator.vibrate)navigator.vibrate([180,80,180])}

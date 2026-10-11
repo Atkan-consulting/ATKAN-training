@@ -1,5 +1,7 @@
-# ATKAN Training — Programme guidé, version 2
+# ATKAN Training — Studio, version 3
 
+## Remplacer la première version sur GitHub
+Décompresser l'archive et déposer TOUS les fichiers du dossier `atkan-training` à la racine du dépôt existant. Remplacer les fichiers existants et ajouter `plan.js`, `guided.js`, `catalog.js` et `studio.js`. GitHub Pages doit pointer sur `main` / `/(root)`. Après le déploiement, recharger la page (Ctrl+F5 si nécessaire). Aucun nouveau dépôt ni clé API nécessaires. Aucun déploiement n'a été effectué par l'assistant.
 
 ## Fonctionnement
 1. Ouvrir « Ma séance guidée », choisir S1–S4 et le jour. La date réelle est indépendante du jour du programme pour permettre de décaler une séance.
@@ -27,3 +29,13 @@ Données locales au navigateur, aucun compte, aucune synchronisation entre appar
 ## Bilan et calculs
 Volume = somme(charge totale en kg × répétitions réellement renseignées). Charge ressentie = somme(minutes renseignées × effort renseigné). Les données absentes ne sont pas estimées. Le bilan contient aussi les prescriptions et les séries cochées. Aucun algorithme privé de Lyfta n'est reproduit.
 
+## Vérifications
+`node tests.cjs` : calendrier, volume, validation des sauvegardes, six journées, tours HYROX et réduction S4.
+`node --check app.js` et `node --check guided.js` : syntaxe.
+L'interface et le son n'ont pas été testés dans un navigateur réel lors de la livraison.
+Documentation GitHub Pages : https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+
+## Présentation inspirée de la capture
+Sur ordinateur : routine à gauche, catalogue à droite. Sur téléphone : catalogue sous la séance. Vignettes SVG originales par catégorie musculaire ; ce ne sont pas des photographies ou démonstrations de mouvements.
+Recherche sans accents, filtres musculaires, favoris persistants et ajout via « + ». Cliquer le nom d’un exercice ouvre ses séries et ses réglages. Flèches pour réordonner, champ Séries pour ajuster le nombre, Retirer pour masquer un exercice.
+Les modifications de structure s’appliquent au jour et à la semaine choisis, pour toutes les dates. Elles ne sont pas propagées automatiquement aux autres semaines. Les cases cochées et mesures restent propres à chaque date. Un programme personnalisé n'est plus nécessairement identique au programme initial. Les repos peuvent toujours être réglés individuellement dans chaque séance.

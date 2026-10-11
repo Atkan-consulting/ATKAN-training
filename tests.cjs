@@ -25,3 +25,7 @@ assert.equal(edited.items[0].id,'added-test');assert.equal(edited.items[1].sets,
 assert.throws(()=>T.validate({version:1,programs:[],sessions:[],routineEdits:{w1_d1:{counts:{e0:0}}}}));
 T.validate({version:1,programs:[],sessions:[],routineEdits:{w1_d1:{counts:{e0:3},hidden:[],order:[],added:[]}},favorites:['c0']});
 console.log('Studio vérifié : catalogue, ajout, retrait, ordre, séries et sauvegardes.');
+global.Catalog=C;const Tracker=require('./tracking-core.js');
+let tracked=Tracker.overview({guided:{},sessions:[]},'2026-10-12');assert.equal(tracked.length,24);assert.equal(tracked[23].date,'2026-11-07');assert.equal(tracked[0].state,'À faire');
+const monday=P.getDay(0,1);const done=Object.fromEntries(monday.items.flatMap(e=>Array.from({length:e.sets},(_,i)=>[e.id+'_'+i,true])));tracked=Tracker.overview({guided:{'2026-10-12_w1_d0':{done}},sessions:[]},'2026-10-12');assert.equal(tracked[0].state,'Terminée');assert.equal(tracked[0].percent,100);assert.equal(tracked[0].saved,false);assert.equal(tracked[1].state,'À faire');
+console.log('Suivi vérifié : 24 séances, dates, cases et distinction terminé/enregistré.');
